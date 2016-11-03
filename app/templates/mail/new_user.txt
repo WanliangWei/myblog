@@ -1,0 +1,1 @@
+User {{ user.username }} 入伙了.

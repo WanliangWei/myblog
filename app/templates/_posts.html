@@ -1,0 +1,49 @@
+
+
+<div class="container">
+<div class="row">
+	
+	
+	{% for post in posts %}
+		<article class="article" >
+			<div class="art-line">
+			
+			<h2>{{ post.head }}</h2>
+			</div>
+			<br>
+			<p><i class="fa fa-calendar" aria-hidden="true"></i>  {{ moment(post.timestamp).format('L') }}</p>
+			<p><i class="fa fa-user" aria-hidden="true"></i><a href="{{ url_for('.user', username=post.author.username) }}">  {{ post.author.username }}</a></p>
+			<p><a href="#"><i class="fa fa-paw" aria-hidden="true"></i> {{ post.category.name }}</a></p>
+			<div class="post-alert">转载请注明出处。</div>
+		
+			<p class="post-body" >
+			 	
+					{% if post.body_html %}                   
+  -                    	{{ post.body_html | safe }}
+                	{% else %}                    
+                    	{{ post.body }}
+                	{% endif %}
+				
+        	</p>
+		
+			<div class="post-line" >
+				<div class="post-button" >
+				{% if current_user == post.author %}
+				{% if current_user.is_administrator() %}
+				
+				<a href="{{ url_for('.edit', id=post.id) }}"><button class="btn  btn-edit text-right" ><span class="glyphicon glyphicon-edit glyphicon " aria-hidden="true"></span>  编辑</button></a>
+               	<a href="{{ url_for('.post_delete', id=post.id,) }}"><button class="btn  btn-delete text-right" ><span class="glyphicon glyphicon-trash glyphicon " aria-hidden="true"></span>  删除</button></a>
+				
+                {% endif %}
+				{% endif %}
+				<a href="{{ url_for('.post', id=post.id) }}#comments" ><button class="btn  btn-comment text-right" ><span class="glyphicon glyphicon-comment glyphicon " aria-hidden="true"></span>  评论</button></a>
+				</div>
+			</div>
+			
+		</article>
+	{% endfor %}
+
+</div>
+</div>
+
+	

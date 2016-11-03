@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}乏魏|编辑文章{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>编辑博客</h1>
+</div>
+<div>
+<div class="container" >
+<div class="row">
+<form method="post" class="form" role="form">
+{{ form.hidden_tag() }}
+    
+
+<div class="col-md-3">
+	<div class="form-group ">
+			<label class="control-label" for="category">分类</label>		
+	        <select class="form-control" id="category" name="category" > 
+	        {% for choice in form.category.choices %}       
+	        <option value={{choice[0]}} >{{choice[1]}}</option>        
+	        {% endfor %}
+	        </select>       
+	</div> 
+</div>
+
+<div class="col-md-12">
+	<div class= "form-group ">
+		<label class="control-label" for="head">文章标题</label>
+	        <input class="form-control" id="head" name="head" type="text" value="{{ form.head.data }}" placeholder="在此输入文章标题，最长25字">
+	</div> 
+</div>
+<div class="col-md-12">
+	<div class="form-group ">
+		<label class="control-label" for="body">正文</label>
+			<textarea class="form-control" id="flask-pagedown-body" name="body" rows="15" placeholder="在此输入文章正文(支持Markdown语法)">{{ form.body.data }}</textarea>
+		
+	</div>
+</div>
+<div class="col-md-1 little-button" >
+	<div class= "form-group " >
+		<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  发表</button>
+							    <!--<input class="btn btn-info" id="submit" name="submit" type="submit" value="发表">-->
+	</div>						    
+</div>
+
+</form>
+</div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

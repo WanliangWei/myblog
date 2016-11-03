@@ -1,0 +1,37 @@
+{% extends "admin/edit.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}乏魏|添加管理员{% endblock %}
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>添加管理员</h1>
+</div>
+<div class="container">
+<form  method="post" role="form" >
+									
+  <div class="form-group has-success " >
+    
+    <input type="username" class="form-control" id="username"  value="{{ form.username.data }}" placeholder="Enter username">
+  </div>
+  <div class="form-group has-success "  >
+   
+    <input type="password" class="form-control" id="Password" value="{{ form.password.data }}" placeholder="Password">
+  </div>
+   <div class="form-group has-success "  >
+    
+    <input type="password" class="form-control" id="Password" value="{{ form.password.data }}" placeholder="Confirme Password">
+  </div>
+	<div class="form-group">
+		<div class="col-md-1 little-button" >	
+			{{ form.csrf_token }}
+			<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  提交</button>
+							    
+		</div>						    
+	</div>
+							
+</form>   
+</div>
+{% endblock %}

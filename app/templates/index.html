@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block contenthead %}
+{{ super() }}
+<div>
+
+	<ul class="breadcrumb">
+  		<li><a href="{{ url_for('main.index') }}"><i class="fa fa-map-signs" aria-hidden="true"></i> Home</a> <span class="divider">/</span></li>
+  		<li class="active"></li>
+		
+	</ul>
+</div>
+
+{% endblock %}
+
+
+{% block page_content %}
+
+<div class="container" >
+<div class="row">
+
+	<div class="col-md-9 ">
+
+	{% for post in posts %}
+		<article class="article" >
+			<div class="art-line">
+			<a href="{{ url_for('.post', id=post.id) }}">
+			<h2>{{ post.head }}</h2>
+			</a>
+			</div>
+			<br>
+			<p><i class="fa fa-calendar" aria-hidden="true"></i>  {{ moment(post.timestamp).format('L') }}<li class="fa fa-star pull-right">{{ post.stared.__len__() }}</li></p>
+			<p><i class="fa fa-user" aria-hidden="true"></i><a href="{{ url_for('.user', username=post.author.username) }}">  {{ post.author.username }}</a><li class="fa fa-eye pull-right">{{ post.visits }}</li></p>
+			<p><a href="#"><i class="fa fa-paw" aria-hidden="true"></i> {{ post.category.name }}</a></p>
+			<div class="post-alert">转载请注明出处。 </div>
+		
+			<p class="post-body" >
+			 	
+                {% if post.body_html %}
+                    {% if post.body[500] %}
+                   		{{ post.body_html[0:500] | safe }}...点击文章标题阅读全文。
+                    {% else %}
+                    	{{ post.body_html | safe }}
+                    {% endif %}
+                {% else %}
+                    {% if post.body[500] %}
+                    	{{ post.body[0:500]}}...点击文章标题阅读全文。
+                    {% else %}
+                    	{{ post.body}}
+                    {% endif %}                
+                {% endif %}
+				
+        	</p>
+		
+			<div class="post-line" >
+				<div class="post-button" >
+				{% if current_user == post.author %}
+				{% if current_user.is_administrator() %}
+				
+				<a href="{{ url_for('.edit', id=post.id) }}"><button class="btn  btn-edit  text-right" ><span class="glyphicon glyphicon-edit glyphicon " aria-hidden="true"></span>  编辑</button></a>
+               	<a href="{{ url_for('.post_delete', id=post.id,) }}"><button class="btn  btn-delete  text-right" ><span class="glyphicon glyphicon-trash glyphicon " aria-hidden="true"></span>  删除</button></a>
+				
+                {% endif %}
+				{% endif %}
+				<a href="{{ url_for('.post', id=post.id) }}#comments" ><button class="btn  btn-comment  text-right" ><span class="glyphicon glyphicon-comment glyphicon " aria-hidden="true"></span>  评论</button></a>
+				{% if current_user.is_authenticated %}
+				{% if not current_user.staring(post)  %}
+                <a class="btn btn-star" href="{{ url_for('.star',id=post.id) }}#comments">
+                <li class="fa fa-star-o"></li> 收藏</a>
+                {% else %}
+                <a class="btn btn-unstar" href="{{ url_for('.unstar',id=post.id) }}#comments"><li  class="fa fa-star"></li> 取消收藏</a>
+                {% endif %}
+                {% endif %}
+				</div>
+			</div>
+			
+		</article>
+		{% endfor %}
+		{% if pagination %}
+			{{ macros.pagination_widget(pagination,'.index') }}	
+      	{% endif %}
+	</div>
+	
+	<div class="col-md-3 ">
+		
+		<div class="pinned tagbox">
+		
+				<div class="tag-line" >
+					<h4 ><i class="fa fa-paw fa-2x" aria-hidden="true"></i>     CATEGORY</h4>
+				</div>
+				<br>
+				<ul >
+          			{% for category in g.categorys %}
+            		<li><a href= "{{ url_for('main.category', id=category.id) }}"><p><span>{{category.name}}</span><span class="badge text-right" style="float:right;">{{category.posts.count()}}</span></p></a></li>
+						
+          			{% endfor %} 
+          		</ul>     
+				
+				
+		
+		</div>
+		
+		<br>
+		<br>
+		
+		
+		<div class="pinned tagbox " >
+		
+				<div class="tag-line">
+					<h4 ><i class="fa fa-fire fa-2x" aria-hidden="true"></i>     HOTPOST</h4>
+				</div>
+				<br>
+				<ul>
+        			{% for post in g.hot_posts %}
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[0].id) }}">No1. {{g.hot_post[0].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[1].id) }}">No2. {{g.hot_post[1].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[2].id) }}">No3. {{g.hot_post[2].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[3].id) }}">No4. {{g.hot_post[3].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[4].id) }}">No5. {{g.hot_post[4].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[5].id) }}">No6. {{g.hot_post[5].head}}</a></li>
+         		 	<li><a href="{{ url_for('main.post', id=g.hot_post[6].id) }}">No7. {{g.hot_post[6].head}}</a></li>
+          			<li><a href="{{ url_for('main.post', id=g.hot_post[7].id) }}">No8. {{g.hot_post[7].head}}</a></li>
+					{% endfor %}       
+        		</ul>
+		</div>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock %}
+
+
+

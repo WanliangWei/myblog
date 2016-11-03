@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}乏魏|写文章{% endblock %}
+
+{% block page_content %}
+
+{{super()}}
+<div class="container" >
+<div class="row">
+<form method="post" class="form" role="form">
+{{ form.hidden_tag() }}
+    
+
+<div class="col-md-3">
+	<div class="form-group ">
+			<label class="control-label" for="category">分类</label>		
+	        <select class="form-control" id="category" name="category" > 
+	        {% for choice in form.category.choices %}       
+	        <option value={{choice[0]}} >{{choice[1]}}</option>        
+	        {% endfor %}
+	        </select>       
+	</div> 
+</div>
+
+<div class="col-md-12">
+	<div class= "form-group " >
+		<label class="control-label" for="head">文章标题</label>
+	        <input class="form-control" id="head" name="head" type="text" value="" placeholder="在此输入文章标题，最长25字">
+	</div> 
+</div>
+<div class="col-md-12">
+	<div class="form-group ">
+		<label class="control-label" for="body">正文</label>
+	        
+			<div class="flask-pagedown">
+				<textarea class="form-control" id="flask-pagedown-body" name="body"  rows="15" placeholder="在此输入文章正文(支持Markdown语法)"></textarea>
+			</div>
+	</div>
+</div>
+<div class="col-md-1 little-button" >
+	<div class= "form-group " >
+		<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  发表</button>
+							    <!--<input class="btn btn-info" id="submit" name="submit" type="submit" value="发表">-->
+	</div>						    
+</div>
+
+</form>
+</div>
+</div>
+
+<!-- Markdown预览 -->
+<script type="text/javascript">
+f = function() {
+    if (typeof flask_pagedown_converter === "undefined")
+        flask_pagedown_converter = Markdown.getSanitizingConverter().makeHtml;
+    var textarea = document.getElementById("flask-pagedown-body");
+    var preview = document.createElement('div');
+    preview.className = 'flask-pagedown-preview';
+    textarea.parentNode.insertBefore(preview, textarea.nextSibling);
+    textarea.onkeyup = function() { preview.innerHTML = flask_pagedown_converter(textarea.value); }
+    textarea.onkeyup.call(textarea);
+}
+if (document.readyState === 'complete') 
+    f();
+else if (window.addEventListener)
+    window.addEventListener("load", f, false);
+else if (window.attachEvent)
+    window.attachEvent("onload", f);
+else
+    f();
+</script>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

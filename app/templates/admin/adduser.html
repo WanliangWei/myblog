@@ -1,0 +1,61 @@
+{% extends "admin/edit.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}乏魏|添加普通用户{% endblock %}
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>添加普通用户</h1>
+</div>
+<div class="container">
+<form   method="post" role="form" >
+							
+	<div class="form-group has-success" >
+		<div class="cl-md-12">	
+             
+                <label class="control-label" for="inputSuccess1">Email</label>
+                <input name="password" placeholder="old password" value="{{ form.email.data }}"  class="form-control" type="email">
+             
+        </div>
+	</div>
+		
+	<div class="form-group has-success" >
+		<div class="cl-md-12">
+             
+                <label class="control-label" for="inputSuccess1">Username</label>
+                <input name="username" placeholder="username" value="{{ form.username.data }}"  class="form-control" type="text">
+             
+        </div>
+        
+	</div>
+	<div class="form-group has-success" >
+		<div class="cl-md-12">
+             
+                <label class="control-label" for="inputSuccess1">Password</label>
+                <input name="password" placeholder="password" value="{{ form.password.data }}"  class="form-control" type="password">
+             
+        </div>
+        
+	</div>
+	<div class="form-group has-success" >
+		<div class="cl-md-12">		
+             
+                <label class="control-label" for="inputSuccess1">Confirm Password</label>
+                <input name="password" placeholder="confirm password" value="{{ form.password.data }}"  class="form-control" type="password">
+             
+       
+		</div>
+	</div>
+	<div class="form-group little-button" >
+		<div class="cl-md-12">
+			{{ form.csrf_token }}
+			<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  提交</button>
+		</div>					    
+							    
+	</div>
+							
+</form>   
+</div>
+{% endblock %}

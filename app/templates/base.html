@@ -1,0 +1,215 @@
+<html>
+<head>
+{% block head %}
+{% block metas %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}乏魏{% endblock %}</title>
+{% endblock %}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prettify.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?78d0fe64bd0b10f4a5754adce136c174";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+{% endblock %}
+</head>
+{% block body %}
+<body>
+<div class="top-nav">
+<div class="container">
+	<div class="row" >
+		<div  class="col-md-6 col-xs-6">
+			<div class="sign">
+				<a  href="https://github.com/WanliangWei/blog"><i class="fa fa-github-square fa-lg" aria-hidden="true"></i> Source code.</a>
+			</div>
+		</div>
+		<div  class="col-md-6  col-xs-6" >
+			<div class="sign leva-mesa"  >
+				<a href="{{ url_for('main.messageboard') }}"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i> Messageboard.</a>
+			</div>
+		</div>
+		
+
+	</div>
+</div>
+</div>
+			
+{% block navbar %}
+<div class="navbar-sticky">
+  <nav class="navbar  navbar-custom navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar3">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>        </button>
+		
+      <a class="navbar-brand" href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="wei">        </a>      </div>
+	  
+      <div id="navbar3" class="navbar-collapse collapse">
+	  	
+        <ul class="nav navbar-nav navbar-right">
+		  <li class="pull-right">
+		  </li>
+          <li class="home"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='img/home.png') }}"></a></li>
+          <li><a href="{{ url_for('main.firstpage') }}"><img src="{{ url_for('static', filename='img/ME.png') }}"></a></li>
+		  {% if not current_user.is_authenticated %}
+          <li><a href="{{ url_for('auth.register') }}"><img src="{{ url_for('static', filename='img/注册.png') }}"></a></li>
+		  <li><a href="{{ url_for('auth.login') }}"><img src="{{ url_for('static', filename='img/登录.png') }}"></a></li>
+		  {% endif %}
+		  
+		  {% if current_user.is_authenticated %}
+		  <li><a href="{{ url_for('main.user', username=current_user.username) }}"><img src="{{ url_for('static', filename='img/profile.png') }}"></a></li>
+		  <li><a href="{{ url_for('main.writepost') }}"><img src="{{ url_for('static', filename='img/write.png') }}"></a></li>
+		  {% endif %}
+		  
+		  
+		  {% if current_user.can(Permission.MODERATE_COMMENTS) %}
+		  <li><a href="{{ url_for('main.moderate') }}"><img src="{{ url_for('static', filename='img/禁言.png') }}"></a></li>
+		  <li><a href="{{ url_for('admin.edit') }}"><img src="{{ url_for('static', filename='img/后台管理.png') }}"></a></li>
+		  {% endif %}
+		  
+		  
+		  {% if current_user.is_authenticated %}
+          <li class="dropdown" >
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ url_for('static', filename='img/消息.png') }}"><span class="caret"></span></a>
+            <ul id="down" class="dropdown-menu" role="menu" >
+              <li><a href="{{ url_for('main.showmessage') }}"><img src="{{ url_for('static', filename='img/邮件消息.png') }}">   {{ current_user.unreadmessages()}}</a></li>
+              <li><a href="{{ url_for('main.shownotice') }}"><img src="{{ url_for('static', filename='img/评论消息.png') }}">   {{ current_user.unreadcommenteds()}}</a></li>
+              <li><a href="{{ url_for('main.showwebpush',username=current_user.username) }}"><img src="{{ url_for('static', filename='img/私信.png') }}">   {{ current_user.unreadwebpushs()}}</a></li>
+              
+            </ul>
+		   
+          </li>
+		  
+		  <li class="dropdown">
+            <a href="{{ url_for('main.user', username=current_user.username) }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img class="user-image" alt="User Image" src="{{ current_user.gravatar(size=32) }}"><span class="caret"></span><span style="color:#56abe4;"> {{current_user.username}}</span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ url_for('auth.change_password') }}"><img src="{{ url_for('static', filename='img/profile 小.png') }}">   账户设置</a></li>
+              <li><a href="{{ url_for('auth.logout') }}"><img src="{{ url_for('static', filename='img/log-out.png') }}">   退出</a></li>
+              
+              
+            </ul>
+		   
+          </li>
+		  {% endif %}
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+</div>
+
+
+<div class="container">
+
+<div class="row">
+
+	<div class="col-md-12 search-text" >
+		<form action="{{url_for('main.search')}}" method="post">
+			<div class="container2" >
+      			<div class='search-container pull-center'>
+					{{g.search_form.hidden_tag()}}
+        			<input placeholder="search post" type="text" name="search" >
+        				<a class="button">
+          				<i class="icon-search"></i>
+        				</a>
+     			</div>
+    		</div>
+		</form>
+	</div>		
+</div>
+
+</div>
+			
+		
+
+{% endblock %}
+
+
+{% block contenthead %}
+{% for message in get_flashed_messages() %}    
+<div class="alert alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  {{ message }}
+</div>
+{% endfor %}　　<!-- flash消息弹出 -->
+{% endblock %}
+
+<div style="text-align:center;">
+{% block page_content %}
+
+{% endblock %}
+</div>
+
+<br>
+{% block footer %}
+
+<div class="content"><a href="#top"><i class="fa fa-angle-double-up"></i></a></div>
+<div class="footer">
+  <div class="social"><a href="1402662091@qq.com"><i class="fa fa-envelope fa-3x" aria-hidden="true"></i></a></div>
+  <div class="social"><a href="wanliangwei0@gmail.com"><i class="fa fa-google-plus fa-3x" aria-hidden="true"></i></a></div>
+  <div class="social"><a href="#"><i class="fa fa-qq fa-3x" aria-hidden="true"></i></a></div>
+  
+  <div class="social"><a href="https://github.com/WanliangWei/blog"><i class="fa fa-github fa-3x" aria-hidden="true"></i></a></div>
+  <div class="social"><a href="#"><i class="fa fa-weibo fa-3x" aria-hidden="true"></i></a></div>
+  <div class="social"><a href="#"><i class="fa fa-weixin fa-3x" aria-hidden="true"></i></a></div>
+  <br></br>
+  <h6>Copyright  V 2016. Powered by Flask and Bootstrap</h6> 
+</div>
+
+
+{% block scripts %}
+{{ moment.include_jquery() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }} 
+<script src="{{url_for('static',filename='js/jquery-3.1.0.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/ jquery.pin.min.js')}}"></script> 
+<script src="{{url_for('static',filename='js/prettify.js')}}"></script>
+<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>  
+<script src="{{url_for('static',filename='js/npm.js')}}"></script>
+<script type="text/javascript" >
+$(".pinned").pin()
+</script>
+<script type="text/javascript" >
+$(window).load(function(){
+     $("pre").addClass("prettyprint");
+     prettyPrint();
+})
+</script>
+
+<script>
+var stickyNav=".navbar-sticky > .navbar";
+$(stickyNav).css({top:"0",width:"100%"}),
+$(".navbar-sticky").height($(stickyNav).outerHeight(!0)),
+$(stickyNav).affix({offset:{top:$(stickyNav).offset().top}});
+
+</script>
+<script type="text/javascript" >
+$("button").click ->
+  $("span").html (i, val) ->
+    val * 1 + 1
+  return
+</script>
+{% endblock %}
+{% endblock %}
+
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}乏魏|个人资料{% endblock %}
+
+{% block page_content %}
+<div class="page-header">                            
+<a href="{{ url_for('auth.change_password') }}" class="btn btn-default btn-flat">返回账户设置</a>                            
+</div>
+<div class="container" >
+<div class="row" style="text-align:left;">
+
+<form method="post" class="form" role="form">
+{{ form.hidden_tag() }}
+
+
+<div class="col-md-6 has-success">
+	<div class="form-group ">
+		
+	        <input class="form-control" id="name" name="name" type="text" value="{{ form.name.data }}" placeholder="在此输入姓名">
+	</div> 
+</div>
+<div class="col-md-6 has-success">
+	<div class= "form-group ">
+		
+	        <input class="form-control" id="location" name="location" type="text" value="{{ form.location.data }}" placeholder="地址">
+	</div> 
+</div>
+<div class="col-md-12 has-success">
+	<div class="form-group ">
+		<label class="control-label" for="about_me">关于我</label>
+			<textarea class="form-control" id="about_me" name="about_me" rows="5" placeholder="^_^">{{ form.about_me.data }}</textarea>
+		
+	</div>
+</div>
+<div class="col-md-1 little-button" >
+	<div class= "form-group " >
+		<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  提交</button>
+							    
+	</div>						    
+</div>
+
+</form>
+</div>
+</div>
+
+{% endblock %}

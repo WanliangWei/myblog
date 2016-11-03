@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}乏魏|个人资料{% endblock %}
+
+{% block page_content %}
+<div class="page-header">                            
+<a href="{{ url_for('auth.change_password') }}" class="btn btn-default btn-flat">返回账户设置</a>                            
+</div>
+<div class="container">
+<div class="row"  >
+
+<form method="post" class="form" role="form">
+{{ form.hidden_tag() }}
+
+
+	<div class= "form-group has-success">
+		
+	        <input class="form-control" id="email" name="email" type="email" value="{{ form.email.data }}" placeholder="在此修改邮箱地址">
+	</div> 
+
+
+	<div class= "form-group has-success">
+		
+	    <input class="form-control" id="username" name="username" type="text" value="{{ form.username.data }}" placeholder="在此修改用户姓名">
+	</div> 
+
+
+
+	
+
+
+	<div class= "form-group has-success">
+					
+	        <select class="form-control" id="role" name="role" > 
+	        {% for choice in form.role.choices %}       
+	        <option value={{choice[0]}} >{{choice[1]}}</option>        
+	        {% endfor %}
+	        </select>   
+	</div> 
+
+
+	<div class= "form-group has-success">
+		
+	    <input class="form-control" id="name" name="name" type="text" value="{{ form.name.data }}" placeholder="在此输入姓名">
+	</div> 
+
+
+	<div class= "form-group has-success">
+		
+	    <input class="form-control" id="location" name="location" type="text" value="{{ form.location.data }}" placeholder="地址">
+	</div> 
+
+
+	<div class="form-group has-success">
+		
+			<textarea class="form-control" id="about_me" name="about_me" rows="5" placeholder="^_^">{{ form.about_me.data }}</textarea>
+		
+	</div>
+
+	<div class="checkbox">
+    	<label>
+      		<input type="checkbox" value="{{ form.confirmed.data }}"> Confirmed
+    	</label>
+  	</div>
+<div class="col-md-1 little-button" >
+	<div class= "form-group " >
+		<button class="btn  btn-info btn-small text-right" type="submit"><span class="glyphicon glyphicon-send glyphicon " aria-hidden="true"></span>  提交</button>
+							    
+	</div>						    
+</div>
+
+</form>
+</div>
+</div>
+
+{% endblock %}
